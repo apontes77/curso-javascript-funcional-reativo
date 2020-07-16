@@ -1,16 +1,16 @@
-const { Observable } = require('rxjs')
+const { Observable, noop } = require('rxjs')
 
-const observable = Observable.create(subscriber =>{
-    const numero = 4
-    function entre (numero) {
-        setTimeout(() => {
-            console.log(numero)
-            numero++
-        }, 200)
-        if(numero == 10){
-            break
+function entre(min, max){
+    return new Observable(subscriber => {
+        for(let i = min; i <= max; i++){
+            subscriber.next(i)
         }
-    }
-})
+        subscriber.complete()
+    })
+}
 
-observable.subscribe(entre())
+entre(4,10).subscribe(
+    num => console.log(`num = ${num}`),
+    noop,
+    () => console.log('Fim!')
+)
